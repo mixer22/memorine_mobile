@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
         rotation2.setDuration(80000);
         imageView_small.startAnimation(rotation2);
         // -- Анимация колец --
-
-
-
     }
 
     public void onClickNewGame(View v){

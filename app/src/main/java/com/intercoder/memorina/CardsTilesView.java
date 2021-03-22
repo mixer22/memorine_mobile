@@ -47,7 +47,6 @@ class Card {
     }
 
     public void draw(Canvas c) {
-        //p.setColor(color);
         width = c.getWidth();
         height = c.getHeight();
 
@@ -58,7 +57,6 @@ class Card {
         float shift_y = max_height/2;
         float w = width/col;
         float h = height/row;
-        Log.i("card", String.valueOf(max_width));
 
         Drawable image;
         if(isOpen && color_index != -1) {
@@ -67,7 +65,6 @@ class Card {
             image = res.getDrawable(R.drawable.card_closed, null);
         }
         image.setBounds((int)(x*w - shift_x + w/2), (int)(y*h - shift_y + h/2), (int)(x*w+shift_x + w/2),(int)(y*h + shift_y + h/2));
-        //c.drawRect(x*w - shift + w/2, 100, x*w+shift + w/2,100 + max_height, p);
         image.draw(c);
     }
 
@@ -110,7 +107,6 @@ public class CardsTilesView extends View {
     public CardsTilesView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        //newGame();
     }
 
     @Override
@@ -118,7 +114,6 @@ public class CardsTilesView extends View {
         super.onDraw(canvas);
         width = getWidth();
         height = getHeight();
-        Paint p = new Paint();
         Drawable image = getContext().getResources().getDrawable(R.drawable.background_game, null);
         int size = Math.max(width, height);
         image.setBounds(- ((size - width)), - ((size - height)), size + ((size - width)/2), size + ((size - height)/2));
@@ -181,7 +176,6 @@ public class CardsTilesView extends View {
         }
         if(COUNT_CARDS % divider != 0){
             int col = COUNT_CARDS % divider;
-            Log.i("New col = ", String.valueOf(col));
             for(int i=0; i<col;i++){
                 cards.add(new Card(i, row_count-1, col, row_count, -1, this.context));
                 indexes.add(c);
@@ -199,7 +193,6 @@ public class CardsTilesView extends View {
             indexes.set(ind, indexes.get(i));
             indexes.set(i, l);
         }
-        Log.i("list", indexes.toString());
         for(int i=0; i<cards.size(); i+=2){
             Card card = cards.get(indexes.get(i));
             Card card2 = cards.get(indexes.get(i+1));
@@ -213,8 +206,6 @@ public class CardsTilesView extends View {
     }
 
     public void finishGame(){
-//        Toast toast = Toast.makeText(getContext(), "WINNER", Toast.LENGTH_SHORT);
-//        toast.show();
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.alert_finish_game, null);
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
@@ -254,7 +245,6 @@ public class CardsTilesView extends View {
             row_count = count / divider + 1;
         }
         col_count = divider;
-
     }
 
     public void addScore(int step){
@@ -270,9 +260,6 @@ public class CardsTilesView extends View {
             } catch (InterruptedException ignored) {}
             return null;
         }
-
-        // после паузы, перевернуть все карты обратно
-
 
         @Override
         protected void onPostExecute(Void aVoid) {
