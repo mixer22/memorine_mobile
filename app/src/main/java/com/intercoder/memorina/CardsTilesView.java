@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Color;               //  TODO убрать неиспользуемые import
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -186,9 +186,9 @@ public class CardsTilesView extends View {
             }
         }
 
-        Random random = new Random(); // я думаю, что рандомить карты после их размещения на экране - плохой вариант 
+        Random random = new Random(); // TODO я думаю, что рандомить карты после их размещения на экране - плохой вариант
                                       //      (+2 дополнительных цикла и +2 лишних списка для хранения ?индексов?)
-                                      // нужно генерировать карту прямо во время ее добавления на экран (выше есть цикл)
+                                      //    нужно генерировать карту прямо во время ее добавления на экран (выше есть цикл)
         /* for(int i=0;i<indexes.size();i++){
             int ind = random.nextInt(indexes.size());
             int l = indexes.get(ind);
@@ -233,7 +233,7 @@ public class CardsTilesView extends View {
         scoreView = textView;
         scoreView.setText((String)(context.getResources().getString(R.string.label_score) + " " + SCORE));
 
-        // хардкодинг, придумай формулу
+        // TODO хардкодинг, придумай формулу
         if(count < 6){
             divider = 2;
         }else if(count < 12){
