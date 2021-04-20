@@ -5,17 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;               //  TODO убрать неиспользуемые import
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -85,7 +82,6 @@ class Card {
 
 public class CardsTilesView extends View {
     ArrayList<Card> cards = new ArrayList<>();
-    List<Integer> indexes = new ArrayList<>();
     List<Integer> indexes_pict = new ArrayList<>();
     int COUNT_CARDS = 12;
     int TIMEOUT = 550;
@@ -154,7 +150,6 @@ public class CardsTilesView extends View {
 
     public void newGame(){
         cards.clear();
-        indexes.clear();
         indexes_pict.clear();
         SCORE = 50;
         scoreView.setText((String)(context.getResources().getString(R.string.label_score) + " " + SCORE));
@@ -164,7 +159,6 @@ public class CardsTilesView extends View {
         for(int i=0; i<col_count;i++){
             for(int j=0; j<row_count;j++) {
                 cards.add(new Card(i, j, col_count, row_count, -1, this.context));
-                indexes.add(c);
                 if(c % 2 == 0){
                     indexes_pict.add(c/2);
                 }
@@ -172,39 +166,23 @@ public class CardsTilesView extends View {
                 if(COUNT_CARDS % divider != 0 && j == row_count - 2){
                     break;
                 }
+                Random random = new Random();
+                int color = random.nextInt(indexes_pict.size());
+                float f = random.nextFloat();
+                if(f <= 0.89) // Шанс повторения
+                    indexes_pict.remove(color);
             }
         }
         if(COUNT_CARDS % divider != 0){
             int col = COUNT_CARDS % divider;
             for(int i=0; i<col;i++){
                 cards.add(new Card(i, row_count-1, col, row_count, -1, this.context));
-                indexes.add(c);
                 if(c % 2 == 0){
                     indexes_pict.add(c/2);
                 }
                 c++;
             }
         }
-
-        Random random = new Random(); // TODO я думаю, что рандомить карты после их размещения на экране - плохой вариант
-                                      //      (+2 дополнительных цикла и +2 лишних списка для хранения ?индексов?)
-                                      //    нужно генерировать карту прямо во время ее добавления на экран (выше есть цикл)
-        /* for(int i=0;i<indexes.size();i++){
-            int ind = random.nextInt(indexes.size());
-            int l = indexes.get(ind);
-            indexes.set(ind, indexes.get(i));
-            indexes.set(i, l);
-        }
-        for(int i=0; i<cards.size(); i+=2){
-            Card card = cards.get(indexes.get(i));
-            Card card2 = cards.get(indexes.get(i+1));
-            int color = random.nextInt(indexes_pict.size());
-            card.color_index =  indexes_pict.get(color);
-            card2.color_index =  indexes_pict.get(color);
-            float f = random.nextFloat();
-            if(f <= 0.89) // Шанс повторения
-                indexes_pict.remove(color);
-        } */
     }
 
     public void finishGame(){
@@ -233,14 +211,13 @@ public class CardsTilesView extends View {
         scoreView = textView;
         scoreView.setText((String)(context.getResources().getString(R.string.label_score) + " " + SCORE));
 
-        // TODO хардкодинг, придумай формулу
-        if(count < 6){
+        if (divider < 6)
             divider = 2;
-        }else if(count < 12){
+        if(count < 12)
             divider = 3;
-        }else{
+        else
             divider = 4;
-        }
+
         if(count % divider == 0){
             row_count = count / divider;
         }else{
